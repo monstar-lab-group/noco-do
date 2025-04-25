@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider  = env("DATABASE_PROVIDER") // "postgresql" or "sqlite"
-  url       = env("DATABASE_URL") // fallback to SQLite for CI
+  provider = "sqlite"
+  url      = env("DATABASE_URL") // Use DATABASE_URL for both environments
 }
 
 model Video {
