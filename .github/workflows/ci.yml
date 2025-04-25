@@ -33,7 +33,7 @@ jobs:
       - name: Setup database for tests
         run: npx prisma db push
       - name: Run tests
-        run: bun test
+        run: NODE_ENV=test bun test --environment jsdom
 
   cypress:
     runs-on: ubuntu-latest
@@ -50,14 +50,16 @@ jobs:
         run: |
           npx prisma db push
           bun run seed
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          build: bun run build
-          start: bun run start
-          wait-on: 'http://localhost:3000'
-          browser: chrome
-          headless: true
+      - name: Install Cypress
+        run: bun add -d cypress
+      - name: Build app
+        run: bun run build
+      - name: Start app in background
+        run: bun run start &
+      - name: Wait for app to start
+        run: npx wait-on http://localhost:3000 -t 60000
+      - name: Run Cypress tests
+        run: bun run cypress:run
 
   storybook:
     runs-on: ubuntu-latest
