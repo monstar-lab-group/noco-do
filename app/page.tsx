@@ -10,7 +10,8 @@ interface PageProps {
 }
 
 export default async function Home({ searchParams }: PageProps) {
-  const { category, search } = searchParams
+  const params = await searchParams
+  const { category, search } = params
 
   // Build the query
   const where: any = {}
