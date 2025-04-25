@@ -1,39 +1,15 @@
-import type { DefaultSession } from "next-auth"
-
-export interface Category {
-  id: string
-  name: string
-}
+import { Category } from "@prisma/client"
 
 export interface Video {
   id: string
   title: string
-  description: string
+  description: string | null
   videoUrl: string
-  thumbnailUrl?: string
-  type: "upload" | "embed"
+  thumbnailUrl: string | null
+  type: string
   publishedAt: Date
-  categoryId?: string
-  category?: Category
-}
-
-export interface User {
-  id: string
-  email: string
-  name?: string
-  isAdmin: boolean
-}
-
-declare module "next-auth" {
-  interface User {
-    id: string
-    isAdmin: boolean
-  }
-
-  interface Session {
-    user: {
-      id: string
-      isAdmin: boolean
-    } & DefaultSession["user"]
-  }
+  createdAt: Date
+  updatedAt: Date
+  categoryId: string | null
+  category: Category | null
 }
