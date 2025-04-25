@@ -4,7 +4,9 @@ import type { NextRequest } from 'next/server';
 const ALLOWED_IPS = process.env.ALLOWED_IPS ? process.env.ALLOWED_IPS.split(',') : [];
 
 export function middleware(request: NextRequest) {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' || 
+      process.env.NODE_ENV === 'test' || 
+      process.env.CI === 'true') {
     return NextResponse.next();
   }
 
