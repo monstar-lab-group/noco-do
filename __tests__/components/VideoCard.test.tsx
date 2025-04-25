@@ -3,19 +3,6 @@ import { render, screen } from '@testing-library/react';
 import VideoCard from '../../components/VideoCard';
 import { formatDate } from '../../lib/utils';
 
-jest.mock('next/image', () => ({
-  __esModule: true,
-  default: ({ src, alt, className }: { src: string; alt: string; className: string }) => (
-    <img src={src} alt={alt} className={className} />
-  ),
-}));
-
-jest.mock('next/link', () => ({
-  __esModule: true,
-  default: ({ href, children }: { href: string; children: React.ReactNode }) => (
-    <a href={href}>{children}</a>
-  ),
-}));
 
 describe('VideoCard', () => {
   const mockVideo = {
