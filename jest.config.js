@@ -14,6 +14,15 @@ const customJestConfig = {
   },
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '<rootDir>/cypress/'],
   testMatch: ['**/__tests__/**/*.test.(ts|tsx|js|jsx)'],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }]
+  },
+  transformIgnorePatterns: [
+    '/node_modules/',
+    '^.+\\.module\\.(css|sass|scss)$',
+  ],
 };
 
-module.exports = createJestConfig(customJestConfig);
+const config = createJestConfig(customJestConfig);
+
+module.exports = config;
