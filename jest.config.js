@@ -5,6 +5,8 @@ module.exports = {
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '<rootDir>/cypress/'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js'
   },
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
@@ -16,5 +18,6 @@ module.exports = {
     'ts-jest': {
       tsconfig: 'tsconfig.jest.json',
     }
-  }
+  },
+  testEnvironment: 'jsdom'
 };
