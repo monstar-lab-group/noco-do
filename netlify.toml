@@ -1,28 +1,12 @@
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 [build.environment]
   NODE_VERSION = "18"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
-# Ensure content directory is accessible
-[[redirects]]
-  from = "/content/*"
-  to = "/content/:splat"
-  status = 200
-
-# Handle API routes
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/nextjs-server/api/:splat"
-  status = 200
-
-# Handle dynamic routes
+# Basic SPA fallback for client-side routing
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/nextjs-server/:splat"
+  to = "/index.html"
   status = 200
-  force = false

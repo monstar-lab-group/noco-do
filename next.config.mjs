@@ -6,8 +6,8 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Use standard output mode for Netlify
-  // output: 'export', // Removed as it's incompatible with API routes
+  // Use export mode for static site generation on Netlify
+  output: 'export',
   
   // Disable image optimization for Netlify compatibility
   images: {
@@ -20,6 +20,11 @@ const nextConfig = {
   
   // Add trailing slash for better compatibility
   trailingSlash: true,
+  
+  // Disable server actions for static export
+  experimental: {
+    serverActions: false,
+  },
 }
 
 export default nextConfig
