@@ -20,11 +20,11 @@ A comprehensive video management platform built with Next.js, Tailwind CSS, and 
 ## Tech Stack
 
 - **Frontend**: Next.js, React, Tailwind CSS, shadcn/ui
-- **Backend**: Next.js API Routes, Server Actions
+- **Backend**: Netlify Functions (serverless)
 - **Content Management**: Markdown files with frontmatter
 - **Package Manager**: Bun
 - **Authentication**: Basic Authentication via middleware
-- **Deployment**: Netlify-ready configuration
+- **Deployment**: Netlify-ready configuration with serverless functions
 
 ## Getting Started
 
