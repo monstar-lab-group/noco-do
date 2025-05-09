@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx scripts/seed.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "node prisma/generate-client.js"
   },
   "dependencies": {
     "@auth/core": "latest",

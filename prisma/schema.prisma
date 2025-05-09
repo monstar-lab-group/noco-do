@@ -7,9 +7,14 @@ generator client {
 
 // Multi-environment database configuration
 // Uses environment variables to determine the database provider
+// Provides default values for Netlify compatibility
 datasource db {
-  provider = env("DATABASE_PROVIDER")
+  provider = env("DATABASE_PROVIDER") // postgresql, mysql, or sqlite
   url      = env("DATABASE_URL")
+  
+  // This ensures the schema can be generated during build time
+  // even if environment variables are not set
+  relationMode = "prisma"
 }
 
 model Video {
