@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "bun --bun run next dev",
-    "build": "bun --bun run next build",
+    "build": "bun --bun run next build && bun run postbuild",
+    "postbuild": "cp -r content .next/standalone/",
     "start": "bun --bun run next start",
     "lint": "bun --bun run next lint",
     "seed": "bun tsx scripts/seed.ts",
