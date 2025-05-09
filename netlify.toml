@@ -1,6 +1,7 @@
 [build]
   command = "bun run build"
   publish = ".next"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ./content/"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -8,3 +9,16 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# Ensure content directory is accessible
+[[redirects]]
+  from = "/content/*"
+  to = "/content/:splat"
+  status = 200
+
+# Handle 404 errors
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
