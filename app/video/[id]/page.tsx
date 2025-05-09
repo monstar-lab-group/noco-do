@@ -1,6 +1,5 @@
 "use client"
 
-import { getVideoById } from "@/lib/markdown"
 import VideoPlayer from "@/components/VideoPlayer"
 import { formatDate } from "@/lib/utils"
 import { notFound } from "next/navigation"

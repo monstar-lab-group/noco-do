@@ -11,10 +11,9 @@ export default function EditVideoPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     async function loadVideo() {
       try {
-        const res = await fetch('/videos.json')
+        const res = await fetch(`/.netlify/functions/video-by-id/${params.id}`)
         if (res.ok) {
-          const videos = await res.json()
-          const foundVideo = videos.find((v: Video) => v.id === params.id)
+          const foundVideo = await res.json()
           setVideo(foundVideo || null)
         }
       } catch (error) {
