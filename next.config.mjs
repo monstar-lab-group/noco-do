@@ -6,22 +6,20 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Explicitly set output to export for Netlify static site generation
-  output: 'export',
+  // Use standard output mode for Netlify
+  // output: 'export', // Removed as it's incompatible with API routes
   
   // Disable image optimization for Netlify compatibility
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
+    domains: ['netlify.app'],
   },
   
-  // Ensure content directory is included in the build
-  distDir: '.next',
+  // Ensure static assets are properly handled
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/' : '',
+  
+  // Add trailing slash for better compatibility
+  trailingSlash: true,
 }
 
 export default nextConfig
