@@ -10,8 +10,14 @@ const nextConfig = {
     unoptimized: true,
     domains: ['netlify.app'],
   },
-  // For Netlify deployment
-  output: 'standalone',
+  // Remove standalone output for Netlify compatibility
+  // output: 'standalone',
+  
+  // Add trailing slash for better compatibility
+  trailingSlash: true,
+  
+  // Ensure static assets are properly handled
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/' : '',
 }
 
 export default nextConfig
