@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generate-videos-json.js",
     "build": "next build",
-    "postbuild": "mkdir -p .next/content && cp -r content .next/",
+    "postbuild": "mkdir -p .next/content && cp -r content .next/ && cp -r public .next/",
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx scripts/seed.ts",
