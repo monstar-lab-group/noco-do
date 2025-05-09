@@ -15,6 +15,7 @@ export interface Video {
   publishedAt: Date
   categoryId?: string
   category?: Category
+  content?: string
 }
 
 export interface User {

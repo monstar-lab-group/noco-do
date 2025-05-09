@@ -1,15 +1,11 @@
 import { NextResponse } from "next/server"
-import prisma from "@/lib/db"
-import { deleteVideoFromBlob } from "@/lib/blob"
+import { getVideoById, updateVideo, deleteVideo } from "@/lib/markdown"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth-utils"
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const video = await prisma.video.findUnique({
-      where: { id: params.id },
-      include: { category: true },
-    })
+    const video = getVideoById(params.id)
 
     if (!video) {
       return NextResponse.json({ error: "Video not found" }, { status: 404 })
@@ -32,14 +28,15 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   try {
     const body = await request.json()
 
-    const video = await prisma.video.update({
-      where: { id: params.id },
-      data: {
-        title: body.title,
-        description: body.description,
-        categoryId: body.categoryId || undefined,
-      },
+    const video = updateVideo(params.id, {
+      title: body.title,
+      description: body.description,
+      content: body.content || `# ${body.title}\n\n${body.description || ""}`,
     })
+
+    if (!video) {
+      return NextResponse.json({ error: "Video not found" }, { status: 404 })
+    }
 
     revalidatePath("/")
     revalidatePath(`/video/${params.id}`)
@@ -60,22 +57,21 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
   }
 
   try {
-    const video = await prisma.video.findUnique({
-      where: { id: params.id },
-    })
+    const video = getVideoById(params.id)
 
     if (!video) {
       return NextResponse.json({ error: "Video not found" }, { status: 404 })
     }
 
-    // If it's an uploaded video, delete from blob storage
     if (video.type === "upload") {
-      await deleteVideoFromBlob(video.videoUrl)
+      console.log(`Would delete file: ${video.videoUrl}`)
     }
 
-    await prisma.video.delete({
-      where: { id: params.id },
-    })
+    const success = deleteVideo(params.id)
+
+    if (!success) {
+      return NextResponse.json({ error: "Failed to delete video" }, { status: 500 })
+    }
 
     revalidatePath("/")
     revalidatePath("/admin")
