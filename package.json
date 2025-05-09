@@ -6,11 +6,11 @@
     "dev": "next dev",
     "prebuild": "node scripts/generate-videos-json.js",
     "build": "next build",
-    "postbuild": "mkdir -p out/content && cp -r content out/ && cp -r public/* out/",
+    "postbuild": "cp -r content .next/",
     "start": "next start",
     "lint": "next lint",
-    "seed": "tsx scripts/seed.ts",
-    "postinstall": "prisma generate"
+    "seed": "bun tsx scripts/seed.ts",
+    "postinstall": "bun prisma generate"
   },
   "dependencies": {
     "@auth/core": "latest",
