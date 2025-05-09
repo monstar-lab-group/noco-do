@@ -2,6 +2,9 @@
 
 A comprehensive video management platform built with Next.js, Tailwind CSS, and Vercel Blob. This platform allows operations teams to share training videos, tutorials, and other video content with their organization.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ca9bdd5f-60f7-4c95-8d00-4b53cba803ed/deploy-status)](https://app.netlify.com/sites/timely-kitten-24e694/deploys)
+
+
 ![Operations Video Platform](https://placeholder.svg?height=400&width=800)
 
 ## Features
