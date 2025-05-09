@@ -1,6 +1,6 @@
 [build]
   command = "bun run build"
-  publish = ".next/standalone"
+  publish = ".next"
   ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ./content/"
 
 [build.environment]
@@ -9,3 +9,9 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
