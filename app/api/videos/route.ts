@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/db"
-import { uploadVideoToBlob, generateThumbnail } from "@/lib/blob"
+import { uploadFile, generateThumbnail } from "@/lib/storage"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth-utils"
 
@@ -41,15 +41,15 @@ export async function POST(request: Request) {
     let thumbnailUrl = "/placeholder.svg?height=720&width=1280"
     let type = "embed"
 
-    // If a file was uploaded, store it in Vercel Blob
+    // If a file was uploaded, store it using the configured storage provider
     if (videoFile && videoFile.size > 0) {
-      const blobResult = await uploadVideoToBlob(videoFile)
+      const uploadResult = await uploadFile(videoFile)
 
-      if (!blobResult.success) {
+      if (!uploadResult.success) {
         return NextResponse.json({ error: "Failed to upload video file" }, { status: 500 })
       }
 
-      videoUrl = blobResult.url
+      videoUrl = uploadResult.url
       thumbnailUrl = await generateThumbnail(videoFile)
       type = "upload"
     }

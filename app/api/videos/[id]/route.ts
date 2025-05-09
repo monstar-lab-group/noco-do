@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/db"
-import { deleteVideoFromBlob } from "@/lib/blob"
+import { deleteFile } from "@/lib/storage"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth-utils"
 
@@ -68,9 +68,9 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       return NextResponse.json({ error: "Video not found" }, { status: 404 })
     }
 
-    // If it's an uploaded video, delete from blob storage
+    // If it's an uploaded video, delete from storage
     if (video.type === "upload") {
-      await deleteVideoFromBlob(video.videoUrl)
+      await deleteFile(video.videoUrl)
     }
 
     await prisma.video.delete({

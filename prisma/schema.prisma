@@ -5,9 +5,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Multi-environment database configuration
+// Uses environment variables to determine the database provider
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = env("DATABASE_PROVIDER")
+  url      = env("DATABASE_URL")
 }
 
 model Video {
