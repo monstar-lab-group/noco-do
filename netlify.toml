@@ -1,11 +1,9 @@
 [build]
-  command = "bun run build"
+  command = "npm run build"
   publish = ".next"
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ./content/"
 
 [build.environment]
   NODE_VERSION = "18"
-  BUN_VERSION = "1.0.30"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -16,9 +14,15 @@
   to = "/content/:splat"
   status = 200
 
-# Handle 404 errors
+# Handle API routes
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/nextjs-server/api/:splat"
+  status = 200
+
+# Handle dynamic routes
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/.netlify/functions/nextjs-server/:splat"
   status = 200
   force = false
