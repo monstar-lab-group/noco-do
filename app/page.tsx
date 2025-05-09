@@ -20,7 +20,7 @@ export default function Home({ searchParams }: PageProps) {
   useEffect(() => {
     async function loadVideos() {
       try {
-        const res = await fetch('/videos.json')
+        const res = await fetch('/.netlify/functions/videos')
         if (res.ok) {
           let data = await res.json()
           

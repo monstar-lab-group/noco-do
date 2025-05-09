@@ -14,7 +14,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function loadVideos() {
       try {
-        const res = await fetch('/videos.json')
+        const res = await fetch('/.netlify/functions/videos')
         if (res.ok) {
           const data = await res.json()
           setVideos(data)
