@@ -1,6 +1,7 @@
 import VideoCard from "@/components/VideoCard"
 import VideoFilter from "@/components/VideoFilter"
-import prisma from "@/lib/db"
+import { getAllVideos } from "@/lib/markdown"
+import { Video } from "@/types"
 
 interface PageProps {
   searchParams: {
@@ -12,29 +13,22 @@ interface PageProps {
 export default async function Home({ searchParams }: PageProps) {
   const { category, search } = searchParams
 
-  // Build the query
-  const where: any = {}
+  let videos = getAllVideos()
 
   if (category) {
-    where.categoryId = category
+    videos = videos.filter((video) => video.categoryId === category)
   }
 
   if (search) {
-    where.OR = [
-      { title: { contains: search, mode: "insensitive" } },
-      { description: { contains: search, mode: "insensitive" } },
-    ]
+    const searchLower = search.toLowerCase()
+    videos = videos.filter(
+      (video) =>
+        video.title.toLowerCase().includes(searchLower) ||
+        video.description.toLowerCase().includes(searchLower)
+    )
   }
 
-  const videos = await prisma.video.findMany({
-    where,
-    orderBy: {
-      publishedAt: "desc",
-    },
-    include: {
-      category: true,
-    },
-  })
+  videos = videos.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -48,7 +42,7 @@ export default async function Home({ searchParams }: PageProps) {
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {videos.map((video) => (
+          {videos.map((video: Video) => (
             <VideoCard key={video.id} video={video} />
           ))}
         </div>
