@@ -20,11 +20,6 @@ const nextConfig = {
     ],
   },
   
-  // Disable server components for static export
-  experimental: {
-    appDir: true,
-  },
-  
   // Ensure content directory is included in the build
   distDir: '.next',
 }
