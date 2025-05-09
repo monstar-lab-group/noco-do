@@ -1,7 +1,6 @@
 [build]
   command = "bun run build"
   publish = ".next"
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ./content/"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -9,23 +8,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-
-# Handle 404 errors
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
-  conditions = {Role = ["anonymous"]}
-
-# Ensure content directory is accessible
-[[redirects]]
-  from = "/content/*"
-  to = "/content/:splat"
-  status = 200
