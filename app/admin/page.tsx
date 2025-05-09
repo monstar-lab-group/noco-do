@@ -1,11 +1,33 @@
-import { getVideos } from "@/lib/db"
+"use client"
+
 import AdminVideoList from "@/components/AdminVideoList"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { PlusCircle, FolderPlus } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Video } from "@/types"
 
-export default async function AdminDashboard() {
-  const videos = await getVideos()
+export default function AdminDashboard() {
+  const [videos, setVideos] = useState<Video[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadVideos() {
+      try {
+        const res = await fetch('/videos.json')
+        if (res.ok) {
+          const data = await res.json()
+          setVideos(data)
+        }
+      } catch (error) {
+        console.error("Failed to load videos:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    loadVideos()
+  }, [])
 
   return (
     <div>
@@ -27,7 +49,11 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      <AdminVideoList videos={videos} />
+      {loading ? (
+        <p>Loading videos...</p>
+      ) : (
+        <AdminVideoList videos={videos} />
+      )}
     </div>
   )
 }
