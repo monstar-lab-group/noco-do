@@ -20,11 +20,6 @@ const nextConfig = {
   
   // Add trailing slash for better compatibility
   trailingSlash: true,
-  
-  // Disable server actions for static export
-  experimental: {
-    serverActions: false,
-  },
 }
 
 export default nextConfig
