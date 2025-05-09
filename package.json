@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "bun --bun run next dev",
     "build": "bun --bun run next build && bun run postbuild",
-    "postbuild": "cp -r content .next/standalone/",
+    "postbuild": "cp -r content .next/ && cp -r public .next/",
     "start": "bun --bun run next start",
     "lint": "bun --bun run next lint",
     "seed": "bun tsx scripts/seed.ts",
