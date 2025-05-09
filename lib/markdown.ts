@@ -109,7 +109,7 @@ export function updateVideo(id: string, videoData: Partial<Video>): Video | null
       publishedAt: updatedVideo.publishedAt.toISOString().split('T')[0],
     };
 
-    const content = videoData.content || existingVideo.content;
+    const content = videoData.content || existingVideo.content || '';
     
     const fileContent = matter.stringify(content, frontmatter);
     

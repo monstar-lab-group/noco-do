@@ -1,6 +1,9 @@
+"use client"
+
 import VideoCard from "@/components/VideoCard"
 import VideoFilter from "@/components/VideoFilter"
-import prisma from "@/lib/db"
+import { Video } from "@/types"
+import { useEffect, useState } from "react"
 
 interface PageProps {
   searchParams: {
@@ -9,32 +12,46 @@ interface PageProps {
   }
 }
 
-export default async function Home({ searchParams }: PageProps) {
+export default function Home({ searchParams }: PageProps) {
   const { category, search } = searchParams
+  const [videos, setVideos] = useState<Video[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Build the query
-  const where: any = {}
-
-  if (category) {
-    where.categoryId = category
-  }
-
-  if (search) {
-    where.OR = [
-      { title: { contains: search, mode: "insensitive" } },
-      { description: { contains: search, mode: "insensitive" } },
-    ]
-  }
-
-  const videos = await prisma.video.findMany({
-    where,
-    orderBy: {
-      publishedAt: "desc",
-    },
-    include: {
-      category: true,
-    },
-  })
+  useEffect(() => {
+    async function loadVideos() {
+      try {
+        const res = await fetch('/.netlify/functions/videos')
+        if (res.ok) {
+          let data = await res.json()
+          
+          if (category) {
+            data = data.filter((video: Video) => video.categoryId === category)
+          }
+          
+          if (search) {
+            const searchLower = search.toLowerCase()
+            data = data.filter(
+              (video: Video) =>
+                video.title.toLowerCase().includes(searchLower) ||
+                video.description.toLowerCase().includes(searchLower)
+            )
+          }
+          
+          data = data.sort((a: Video, b: Video) => 
+            new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+          )
+          
+          setVideos(data)
+        }
+      } catch (error) {
+        console.error("Failed to load videos:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    loadVideos()
+  }, [category, search])
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -42,13 +59,17 @@ export default async function Home({ searchParams }: PageProps) {
 
       <VideoFilter />
 
-      {videos.length === 0 ? (
+      {loading ? (
+        <div className="rounded-lg border border-dashed p-8 text-center">
+          <p className="text-muted-foreground">Loading videos...</p>
+        </div>
+      ) : videos.length === 0 ? (
         <div className="rounded-lg border border-dashed p-8 text-center">
           <p className="text-muted-foreground">No videos available yet.</p>
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {videos.map((video) => (
+          {videos.map((video: Video) => (
             <VideoCard key={video.id} video={video} />
           ))}
         </div>

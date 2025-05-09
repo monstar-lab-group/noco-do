@@ -1,6 +1,33 @@
 [build]
   command = "npm run build"
   publish = ".next"
+  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "18"
+  BUN_VERSION = "1.0.30"
+
+# API redirects to Netlify Functions
+[[redirects]]
+  from = "/api/videos"
+  to = "/.netlify/functions/videos"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/videos/*"
+  to = "/.netlify/functions/video-by-id/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/auth/login"
+  to = "/.netlify/functions/auth-login"
+  status = 200
+  force = true
+
+# Basic authentication for all routes
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Basic-Auth = "${BASIC_AUTH_USERNAME}:${BASIC_AUTH_PASSWORD}"

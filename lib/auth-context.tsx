@@ -41,15 +41,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const login = async (email: string, password: string) => {
-    // Simple check against environment variables
-    // In a real app, this would be an API call
-    if (email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
-      const userData = { email, isAdmin: true }
-      setUser(userData)
-      localStorage.setItem("user", JSON.stringify(userData))
-      return true
+    try {
+      const response = await fetch('/.netlify/functions/auth-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Login failed:", error);
+      return false;
     }
-    return false
   }
 
   const logout = () => {
