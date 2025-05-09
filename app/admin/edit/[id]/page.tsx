@@ -4,10 +4,6 @@ import EditVideoForm from "@/components/EditVideoForm"
 import { useEffect, useState } from "react"
 import { Video } from "@/types"
 
-export function generateStaticParams() {
-  return []
-}
-
 export default function EditVideoPage({ params }: { params: { id: string } }) {
   const [video, setVideo] = useState<Video | null>(null)
   const [loading, setLoading] = useState(true)
